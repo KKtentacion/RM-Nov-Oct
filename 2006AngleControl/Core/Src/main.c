@@ -28,6 +28,8 @@
 #include "drv_can.h"
 #include "pid.h"
 #include "led.h"
+#include "drv_usart.h"
+#include "rc_potocal.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,10 +50,13 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static float target_speed=1000;
 static float target_angle=1000;
 pid_struct_t motor_pid[MOTOR_MAX_NUM];
 cascadepid_struct_t motor_cascadepid;
+
+extern moto_info_t motor_info[MOTOR_MAX_NUM];
+
+extern uint16_t Realsetangle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -97,14 +102,12 @@ int main(void)
   MX_CAN1_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+	USART3_Init();
   can_user_init(&hcan1);
   LED_RED_TOGGLE();
-
-  for(int i=0;i<MOTOR_MAX_NUM;i++)
-  pid_init(&motor_pid[i], 40, 3, 0, 30000, 30000);
-
-  // pid_init(&motor_cascadepid.inner,40,3,0,30000,30000);
-  // pid_init(&motor_cascadepid.outer,40,3,0,30000,30000);
+	
+  pid_init(&motor_cascadepid.inner,40,3,0,30000,30000);
+  pid_init(&motor_cascadepid.outer,40,3,0,30000,30000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,9 +117,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		for(int i=0;i<MOTOR_MAX_NUM;i++)
+    for(int i=0;i<MOTOR_MAX_NUM;i++)
     {
-      motor_info[i].set_voltage=pid_calc(&motor_pid[i],target_speed,motor_info[i].rotor_speed);
+      motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid,target_angle,motor_info[i].rotor_angle,motor_info[i].rotor_speed);
     }
 
     set_motor_voltage(0, 
@@ -124,17 +127,6 @@ int main(void)
                   motor_info[1].set_voltage, 
                   motor_info[2].set_voltage, 
                   motor_info[3].set_voltage);
-
-    // for(int i=0;i<MOTOR_MAX_NUM;i++)
-    // {
-    //   motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid,target_angle,motor_info[i].rotor_angle,motor_info[i].rotor_speed);
-    // }
-
-    // set_motor_voltage(0, 
-    //               motor_info[0].set_voltage, 
-    //               motor_info[1].set_voltage, 
-    //               motor_info[2].set_voltage, 
-    //               motor_info[3].set_voltage);
 
     HAL_Delay(100);
   }

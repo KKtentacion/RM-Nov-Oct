@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>2006AngleControl\</OutputDirectory>
-          <OutputName>2006AngleControl</OutputName>
+          <OutputName>6020AngleControl</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -543,6 +543,11 @@
               <FileName>pid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>rc_potocal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\rc_potocal.c</FilePath>
             </File>
             <File>
               <FileName>drv_usart.c</FileName>

@@ -15,8 +15,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __BSP_CAN
-#define __BSP_CAN
+#ifndef __DRV_CAN_H
+#define __DRV_CAN_H
 
 #include "can.h"
 

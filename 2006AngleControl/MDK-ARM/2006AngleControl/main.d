@@ -37,3 +37,5 @@
 2006anglecontrol\main.o: ../Core/Inc/drv_can.h
 2006anglecontrol\main.o: ../Core/Inc/pid.h
 2006anglecontrol\main.o: ../Core/Inc/led.h
+2006anglecontrol\main.o: ../Core/Inc/drv_usart.h
+2006anglecontrol\main.o: ../Core/Inc/rc_potocal.h

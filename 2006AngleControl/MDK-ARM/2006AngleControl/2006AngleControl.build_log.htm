@@ -21,17 +21,133 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.1.0.0
 Dialog DLL:      TCM.DLL V1.56.4.0
  
 <h2>Project:</h2>
-e:\NewRM\RM-Nov-Oct\RM-Nov-Oct\2006AngleControl\MDK-ARM\2006AngleControl.uvprojx
-Project File Date:  10/31/2023
+E:\NewRM\RM-Nov-Oct\RM-Nov-Oct\2006AngleControl\MDK-ARM\2006AngleControl.uvprojx
+Project File Date:  11/01/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'E:\Keil_MDK\ARM\ARMCC\Bin'
-Build target '2006AngleControl'
+Rebuild target '2006AngleControl'
+assembling startup_stm32f407xx.s...
+compiling can.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling stm32f4xx_hal_flash_ex.c...
+compiling dma.c...
+compiling usart.c...
+compiling gpio.c...
+compiling stm32f4xx_hal_can.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_it.c...
+compiling main.c...
+../Core/Src/main.c(51): warning:  #177-D: variable "target_speed"  was declared but never referenced
+  static float target_speed=1000;
+../Core/Src/main.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_rcc_ex.c...
+compiling stm32f4xx_hal_msp.c...
+compiling stm32f4xx_hal_flash.c...
+compiling rc_potocal.c...
+../Core/Inc/rc_potocal.h(32): error:  #1032: Definition of nested anonymous struct in packed "struct <unnamed>" must be __packed
+      }rc;
+../Core/Inc/rc_potocal.h(40): error:  #1032: Definition of nested anonymous struct in packed "struct <unnamed>" must be __packed
+      }mouse;
+../Core/Inc/rc_potocal.h(44): error:  #1032: Definition of nested anonymous struct in packed "struct <unnamed>" must be __packed
+      }key;
+../Core/Inc/rc_potocal.h(54): warning:  #1-D: last line of file ends without a newline
+  void USART3_IRQHandler (void);
+..\Core\Src\rc_potocal.c(23): warning:  #223-D: function "RCC_AHB1PeriphClockCmd" declared implicitly
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_DMA1, ENABLE);
+..\Core\Src\rc_potocal.c(23): error:  #20: identifier "RCC_AHB1Periph_GPIOA" is undefined
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_DMA1, ENABLE);
+..\Core\Src\rc_potocal.c(23): error:  #20: identifier "RCC_AHB1Periph_DMA1" is undefined
+      RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_DMA1, ENABLE);
+..\Core\Src\rc_potocal.c(24): warning:  #223-D: function "RCC_APB1PeriphClockCmd" declared implicitly
+      RCC_APB1PeriphClockCmd(RCC_APB1Periph_usart3, ENABLE);
+..\Core\Src\rc_potocal.c(24): error:  #20: identifier "RCC_APB1Periph_usart3" is undefined
+      RCC_APB1PeriphClockCmd(RCC_APB1Periph_usart3, ENABLE);
+..\Core\Src\rc_potocal.c(25): warning:  #223-D: function "GPIO_PinAFConfig" declared implicitly
+      GPIO_PinAFConfig(GPIOA,GPIO_PinSource3, GPIO_AF_usart3);
+..\Core\Src\rc_potocal.c(25): error:  #20: identifier "GPIO_PinSource3" is undefined
+      GPIO_PinAFConfig(GPIOA,GPIO_PinSource3, GPIO_AF_usart3);
+..\Core\Src\rc_potocal.c(25): error:  #20: identifier "GPIO_AF_usart3" is undefined
+      GPIO_PinAFConfig(GPIOA,GPIO_PinSource3, GPIO_AF_usart3);
+..\Core\Src\rc_potocal.c(29): error:  #20: identifier "USART_InitTypeDef" is undefined
+          USART_InitTypeDef usart3;
+..\Core\Src\rc_potocal.c(30): error:  #136: struct "<unnamed>"  has no field "GPIO_Pin"
+          gpio.GPIO_Pin = GPIO_Pin_3 ;
+..\Core\Src\rc_potocal.c(30): error:  #20: identifier "GPIO_Pin_3" is undefined
+          gpio.GPIO_Pin = GPIO_Pin_3 ;
+..\Core\Src\rc_potocal.c(31): error:  #136: struct "<unnamed>"  has no field "GPIO_Mode"
+          gpio.GPIO_Mode = GPIO_Mode_AF;
+..\Core\Src\rc_potocal.c(31): error:  #20: identifier "GPIO_Mode_AF" is undefined
+          gpio.GPIO_Mode = GPIO_Mode_AF;
+..\Core\Src\rc_potocal.c(32): error:  #136: struct "<unnamed>"  has no field "GPIO_OType"
+          gpio.GPIO_OType = GPIO_OType_PP;
+..\Core\Src\rc_potocal.c(32): error:  #20: identifier "GPIO_OType_PP" is undefined
+          gpio.GPIO_OType = GPIO_OType_PP;
+..\Core\Src\rc_potocal.c(33): error:  #136: struct "<unnamed>"  has no field "GPIO_Speed"
+          gpio.GPIO_Speed = GPIO_Speed_100MHz;
+..\Core\Src\rc_potocal.c(33): error:  #20: identifier "GPIO_Speed_100MHz" is undefined
+          gpio.GPIO_Speed = GPIO_Speed_100MHz;
+..\Core\Src\rc_potocal.c(34): error:  #136: struct "<unnamed>"  has no field "GPIO_PuPd"
+          gpio.GPIO_PuPd = GPIO_PuPd_NOPULL;
+..\Core\Src\rc_potocal.c(34): error:  #20: identifier "GPIO_PuPd_NOPULL" is undefined
+          gpio.GPIO_PuPd = GPIO_PuPd_NOPULL;
+..\Core\Src\rc_potocal.c(35): warning:  #223-D: function "GPIO_Init" declared implicitly
+          GPIO_Init(GPIOA, &gpio);
+..\Core\Src\rc_potocal.c(36): warning:  #223-D: function "USART_DeInit" declared implicitly
+          USART_DeInit(usart3);
+..\Core\Src\rc_potocal.c(38): error:  #20: identifier "USART_WordLength_8b" is undefined
+          usart3.USART_WordLength = USART_WordLength_8b;
+..\Core\Src\rc_potocal.c(39): error:  #20: identifier "USART_StopBits_1" is undefined
+          usart3.USART_StopBits = USART_StopBits_1;
+..\Core\Src\rc_potocal.c(40): error:  #20: identifier "USART_Parity_Even" is undefined
+          usart3.USART_Parity = USART_Parity_Even;
+..\Core\Src\rc_potocal.c(41): error:  #20: identifier "USART_Mode_Rx" is undefined
+          usart3.USART_Mode = USART_Mode_Rx;
+..\Core\Src\rc_potocal.c(42): error:  #20: identifier "USART_HardwareFlowControl_None" is undefined
+          usart3.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+..\Core\Src\rc_potocal.c(43): warning:  #223-D: function "USART_Init" declared implicitly
+          USART_Init(usart3,&usart3);
+..\Core\Src\rc_potocal.c(44): warning:  #223-D: function "USART_Cmd" declared implicitly
+          USART_Cmd(usart3,ENABLE);
+..\Core\Src\rc_potocal.c(45): warning:  #223-D: function "USART_DMACmd" declared implicitly
+          USART_DMACmd(usart3,USART_DMAReq_Rx,ENABLE);
+..\Core\Src\rc_potocal.c(45): error:  #20: identifier "USART_DMAReq_Rx" is undefined
+          USART_DMACmd(usart3,USART_DMAReq_Rx,ENABLE);
+..\Core\Src\rc_potocal.c(49): error:  #20: identifier "NVIC_InitTypeDef" is undefined
+          NVIC_InitTypeDef nvic;
+..\Core\Src\rc_potocal.c(54): warning:  #223-D: function "NVIC_Init" declared implicitly
+          NVIC_Init(&nvic);
+..\Core\Src\rc_potocal.c(59): warning:  #223-D: function "DMA_DeInit" declared implicitly
+          DMA_DeInit(DMA1_Stream5);
+..\Core\Src\rc_potocal.c(60): error:  #136: struct "<unnamed>"  has no field "DMA_Channel"
+          dma.DMA_Channel = DMA_Channel_4;
+..\Core\Src\rc_potocal.c(60): error:  #20: identifier "DMA_Channel_4" is undefined
+          dma.DMA_Channel = DMA_Channel_4;
+..\Core\Src\rc_potocal.c(61): error:  #136: struct "<unnamed>"  has no field "DMA_PeripheralBaseAddr"
+          dma.DMA_PeripheralBaseAddr = (uint32_t)&(usart3->DR);
+..\Core\Src\rc_potocal.c(61): error:  #20: identifier "usart3" is undefined
+          dma.DMA_PeripheralBaseAddr = (uint32_t)&(usart3->DR);
+..\Core\Src\rc_potocal.c: 11 warnings, 30 errors
+compiling stm32f4xx_hal.c...
+compiling stm32f4xx_hal_tim.c...
+compiling pid.c...
+..\Core\Src\pid.c(57): warning:  #174-D: expression has no effect
+    pid->i_out=(pid->i_out, -pid->i_max, pid->i_max);
+..\Core\Src\pid.c(60): warning:  #174-D: expression has no effect
+    pid->output=(pid->output, -pid->out_max, pid->out_max);
+..\Core\Src\pid.c: 2 warnings, 0 errors
+compiling stm32f4xx_hal_tim_ex.c...
 compiling drv_can.c...
-linking...
-Program Size: Code=8382 RO-data=458 RW-data=28 ZI-data=2380  
-FromELF: creating hex file...
-"2006AngleControl\2006AngleControl.axf" - 0 Error(s), 0 Warning(s).
+compiling stm32f4xx_hal_pwr.c...
+compiling system_stm32f4xx.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_exti.c...
+compiling stm32f4xx_hal_uart.c...
+"2006AngleControl\2006AngleControl.axf" - 30 Error(s), 14 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -55,7 +171,8 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.6.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Build Time Elapsed:  00:00:03
+Target not created.
+Build Time Elapsed:  00:00:12
 </pre>
 </body>
 </html>
