@@ -54,10 +54,10 @@ float pid_calc(pid_struct_t *pid, float ref, float fdb)
   pid->p_out  = pid->kp * pid->err[0];
   pid->i_out += pid->ki * pid->err[0];
   pid->d_out  = pid->kd * (pid->err[0] - pid->err[1]);
-  pid->i_out=(pid->i_out, -pid->i_max, pid->i_max);
+  pid->i_out=LIMIT_MIN_MAX(pid->i_out, -pid->i_max, pid->i_max);
   
   pid->output = pid->p_out + pid->i_out + pid->d_out;
-  pid->output=(pid->output, -pid->out_max, pid->out_max);
+  pid->output=LIMIT_MIN_MAX(pid->output, -pid->out_max, pid->out_max);
   return pid->output;
 }
 

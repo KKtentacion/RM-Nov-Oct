@@ -3,10 +3,10 @@
 
 #include  "rc_potocal.h"
 extern UART_HandleTypeDef huart3;
-extern DMA_HandleTypeDef hdma_usart6_rx;
 #define USART3_RX_DATA_FRAME_LEN	(18u)	// ??3?????
 #define USART3_RX_BUF_LEN			(USART3_RX_DATA_FRAME_LEN + 6u)	// ??3???????
 uint8_t usart3_dma_rxbuf[2][USART3_RX_BUF_LEN];
+uint8_t judge_receive_length=0;
 
 void USART3_Init(void)
 {
@@ -33,29 +33,33 @@ void DRV_USART3_IRQHandler(UART_HandleTypeDef *huart)  //?stm32f4xx_it.c??USART3
 	}
 }
 
+
+
+
 static void uart_rx_idle_callback(UART_HandleTypeDef* huart) 
 {
     __HAL_UART_CLEAR_IDLEFLAG(huart);	
 	/* handle received data in idle interrupt */
 		 if(huart == &huart3)
-		{
-			/* clear DMA transfer complete flag */
-			__HAL_DMA_DISABLE(huart->hdmarx);
+	{
+		/* clear DMA transfer complete flag */
+		__HAL_DMA_DISABLE(huart->hdmarx);
 
-			/* handle dbus data dbus_buf from DMA */
-			//uint32_t status = taskENTER_CRITICAL_FROM_ISR();
-			if ((USART3_RX_BUF_LEN - huart->hdmarx->Instance->NDTR) == USART3_RX_DATA_FRAME_LEN)
-			{
-				if(huart->hdmarx->Instance->CR & DMA_SxCR_CT)
-					huart->hdmarx->XferM1CpltCallback(huart->hdmarx);
-				else
-					huart->hdmarx->XferCpltCallback(huart->hdmarx);
-			}
-		
-			/* restart dma transmission */
-			__HAL_DMA_SET_COUNTER(huart->hdmarx, USART3_RX_BUF_LEN);
-			__HAL_DMA_ENABLE(huart->hdmarx);	  
+		/* handle dbus data dbus_buf from DMA */
+		//uint32_t status = taskENTER_CRITICAL_FROM_ISR();
+		if ((USART3_RX_BUF_LEN - huart->hdmarx->Instance->NDTR) == USART3_RX_DATA_FRAME_LEN)
+		{
+			if(huart->hdmarx->Instance->CR & DMA_SxCR_CT)
+				huart->hdmarx->XferM1CpltCallback(huart->hdmarx);
+			else
+				huart->hdmarx->XferCpltCallback(huart->hdmarx);
 		}
+	
+
+		/* restart dma transmission */
+		__HAL_DMA_SET_COUNTER(huart->hdmarx, USART3_RX_BUF_LEN);
+		__HAL_DMA_ENABLE(huart->hdmarx);	  
+	}
   
 }
 
@@ -67,7 +71,7 @@ static void dma_m0_rxcplt_callback(DMA_HandleTypeDef *hdma)
 		if(hdma== huart3.hdmarx)
 		{
 				hdma->Instance->CR |= (uint32_t)(DMA_SxCR_CT);	 // ??????????Memory1
-				RemoteDataProcess(usart3_dma_rxbuf[0]);
+				USART3_rxDataHandler(usart3_dma_rxbuf[0]);
 		}
 
 }
@@ -79,7 +83,7 @@ static void dma_m1_rxcplt_callback(DMA_HandleTypeDef *hdma)
 	if(hdma== huart3.hdmarx)
 	{
 		hdma->Instance->CR &= ~(uint32_t)(DMA_SxCR_CT);	 // ??????????Memory0
-		RemoteDataProcess(usart3_dma_rxbuf[1]);
+		USART3_rxDataHandler(usart3_dma_rxbuf[1]);
 	}
 	
 }
@@ -100,80 +104,78 @@ static HAL_StatusTypeDef DMAEx_MultiBufferStart_NoIT(DMA_HandleTypeDef *hdma, \
 		return HAL_ERROR;
     }   
 
-		/* Set the UART DMA transfer complete callback */
-		/* Current memory buffer used is Memory 1 callback */
-		hdma->XferCpltCallback   = dma_m0_rxcplt_callback;
-		/* Current memory buffer used is Memory 0 callback */
-		hdma->XferM1CpltCallback = dma_m1_rxcplt_callback;	
+	/* Set the UART DMA transfer complete callback */
+	/* Current memory buffer used is Memory 1 callback */
+	hdma->XferCpltCallback   = dma_m0_rxcplt_callback;
+	/* Current memory buffer used is Memory 0 callback */
+	hdma->XferM1CpltCallback = dma_m1_rxcplt_callback;	
 
-		/* Check callback functions */
-		if ((NULL == hdma->XferCpltCallback) || (NULL == hdma->XferM1CpltCallback))
-		{
-			hdma->ErrorCode = HAL_DMA_ERROR_PARAM;
-			return HAL_ERROR;
-		}
+	/* Check callback functions */
+	if ((NULL == hdma->XferCpltCallback) || (NULL == hdma->XferM1CpltCallback))
+	{
+	hdma->ErrorCode = HAL_DMA_ERROR_PARAM;
+	return HAL_ERROR;
+	}
 	
-		/* Process locked */
-		__HAL_LOCK(hdma);
+	/* Process locked */
+	__HAL_LOCK(hdma);
 	
-		if(HAL_DMA_STATE_READY == hdma->State)
-		{	
-			/* Change DMA peripheral state */
-			hdma->State = HAL_DMA_STATE_BUSY;
+	if(HAL_DMA_STATE_READY == hdma->State)
+	{	
+		/* Change DMA peripheral state */
+		hdma->State = HAL_DMA_STATE_BUSY;
 
-			/* Initialize the error code */
-			hdma->ErrorCode = HAL_DMA_ERROR_NONE;
+		/* Initialize the error code */
+		hdma->ErrorCode = HAL_DMA_ERROR_NONE;
 
-			/* Enable the Double buffer mode */
-			hdma->Instance->CR |= (uint32_t)DMA_SxCR_DBM;
+		/* Enable the Double buffer mode */
+		hdma->Instance->CR |= (uint32_t)DMA_SxCR_DBM;
 
-			/* Configure DMA Stream destination address */
-			hdma->Instance->M1AR = SecondMemAddress;		
+		/* Configure DMA Stream destination address */
+		hdma->Instance->M1AR = SecondMemAddress;		
 
-			/* Configure DMA Stream data length */
-			hdma->Instance->NDTR = DataLength;		
-			
-			/* Peripheral to Memory */
-			if((hdma->Init.Direction) == DMA_MEMORY_TO_PERIPH)
-			{   
-				/* Configure DMA Stream destination address */
-				hdma->Instance->PAR = DstAddress;
-
-				/* Configure DMA Stream source address */
-				hdma->Instance->M0AR = SrcAddress;
-			}
-			/* Memory to Peripheral */
-			else
-			{
-				/* Configure DMA Stream source address */
-				hdma->Instance->PAR = SrcAddress;
-
-				/* Configure DMA Stream destination address */
-				hdma->Instance->M0AR = DstAddress;
-			}		
-			
-			/* Clear TC flags */
-			__HAL_DMA_CLEAR_FLAG (hdma, __HAL_DMA_GET_TC_FLAG_INDEX(hdma));
-			/* Enable TC interrupts*/
-	//		hdma->Instance->CR  |= DMA_IT_TC;
-			
-			/* Enable the peripheral */
-			__HAL_DMA_ENABLE(hdma); 
-		}
+		/* Configure DMA Stream data length */
+		hdma->Instance->NDTR = DataLength;		
 		
+		/* Peripheral to Memory */
+		if((hdma->Init.Direction) == DMA_MEMORY_TO_PERIPH)
+		{   
+			/* Configure DMA Stream destination address */
+			hdma->Instance->PAR = DstAddress;
+
+			/* Configure DMA Stream source address */
+			hdma->Instance->M0AR = SrcAddress;
+		}
+		/* Memory to Peripheral */
 		else
 		{
-			/* Process unlocked */
-			__HAL_UNLOCK(hdma);	  
+			/* Configure DMA Stream source address */
+			hdma->Instance->PAR = SrcAddress;
 
-			/* Return error status */
-			status = HAL_BUSY;		
-		}
+			/* Configure DMA Stream destination address */
+			hdma->Instance->M0AR = DstAddress;
+		}		
 		
+		/* Clear TC flags */
+		__HAL_DMA_CLEAR_FLAG (hdma, __HAL_DMA_GET_TC_FLAG_INDEX(hdma));
+		/* Enable TC interrupts*/
+//		hdma->Instance->CR  |= DMA_IT_TC;
+		
+		/* Enable the peripheral */
+		__HAL_DMA_ENABLE(hdma); 
+	}
+	else
+	{
 		/* Process unlocked */
-		__HAL_UNLOCK(hdma);
+		__HAL_UNLOCK(hdma);	  
 
-		return status; 	
+		/* Return error status */
+		status = HAL_BUSY;		
+	}
+	/* Process unlocked */
+	__HAL_UNLOCK(hdma);
+
+	return status; 	
 }
 
 

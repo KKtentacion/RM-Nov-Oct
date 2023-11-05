@@ -28,15 +28,22 @@ losing data.
 
 #define RC_CH_VALUE_OFFSET      ((uint16_t)1024)
 #define MAX_ANGLE								((uint16_t)8191)
+#define MIN_ANGLE								((uint16_t)0)
 
 volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH]; 
 //double sbus rx buffer to save data
 static RC_Ctl_t RC_CtrlData;
-uint16_t Setdeltangle;
-uint16_t Realsetangle=0;
 
-void RemoteDataProcess(uint8_t *pData)
+extern float RealSetAngle[MOTOR_MAX_NUM];
+float Setdeltangle;
+int realdata;
+
+
+int flag2=0;
+
+void USART3_rxDataHandler(uint8_t *pData)
 {
+		flag2=1;
     if(pData == NULL)
     {
         return;
@@ -63,10 +70,16 @@ void RemoteDataProcess(uint8_t *pData)
     RC_CtrlData.rc.ch2-=RC_CH_VALUE_OFFSET;
     RC_CtrlData.rc.ch3-=RC_CH_VALUE_OFFSET;
 		
-		Setdeltangle =RC_CtrlData.rc.ch0;
+		Setdeltangle =RC_CtrlData.rc.ch0/6600;
+		realdata=Setdeltangle*6600;
 		
-		Realsetangle+=Setdeltangle;
-		if(Realsetangle>=MAX_ANGLE)
-			Realsetangle-=MAX_ANGLE;
-		
+		for(int i=0;i<MOTOR_MAX_NUM;i++)
+		{
+			RealSetAngle[i]+=Setdeltangle;
+			if(RealSetAngle[i]>=MAX_ANGLE)
+				RealSetAngle[i]-=MAX_ANGLE;
+			
+			if(RealSetAngle[i]<=MIN_ANGLE)
+				RealSetAngle[i]+=MAX_ANGLE;
+		}		
 }

@@ -2,6 +2,7 @@
 #define RC_POTOCAL_H
 
 #include "usart.h"
+#include "drv_can.h"
 
 /* ----------------------- RC Channel Definition---------------------------- */
 #define RC_CH_VALUE_MIN ((uint16_t)364 )
@@ -49,7 +50,7 @@ typedef __packed struct
 } RC_Ctl_t;
 
 //function declaration
-void RemoteDataProcess(uint8_t *pData);
+void USART3_rxDataHandler(uint8_t *pData);
 
 
 #endif

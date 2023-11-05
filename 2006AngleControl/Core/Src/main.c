@@ -50,13 +50,13 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static float target_angle=1000;
+static float target_angle=8000;
 pid_struct_t motor_pid[MOTOR_MAX_NUM];
-cascadepid_struct_t motor_cascadepid;
+cascadepid_struct_t motor_cascadepid[MOTOR_MAX_NUM];
 
 extern moto_info_t motor_info[MOTOR_MAX_NUM];
 
-extern uint16_t Realsetangle;
+extern float RealSetAngle[MOTOR_MAX_NUM];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,8 +106,11 @@ int main(void)
   can_user_init(&hcan1);
   LED_RED_TOGGLE();
 	
-  pid_init(&motor_cascadepid.inner,40,3,0,30000,30000);
-  pid_init(&motor_cascadepid.outer,40,3,0,30000,30000);
+	for(int i=0;i<MOTOR_MAX_NUM;i++)
+	{
+		pid_init(&motor_cascadepid[i].inner,24,10,19,10000,20000);
+		pid_init(&motor_cascadepid[i].outer,0.17,0,0.15,10000,6000);
+	}
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,7 +122,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
     for(int i=0;i<MOTOR_MAX_NUM;i++)
     {
-      motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid,target_angle,motor_info[i].rotor_angle,motor_info[i].rotor_speed);
+      motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid[i],RealSetAngle[i],motor_info[i].rotor_angle,motor_info[i].rotor_speed);
     }
 
     set_motor_voltage(0, 
@@ -128,7 +131,6 @@ int main(void)
                   motor_info[2].set_voltage, 
                   motor_info[3].set_voltage);
 
-    HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }

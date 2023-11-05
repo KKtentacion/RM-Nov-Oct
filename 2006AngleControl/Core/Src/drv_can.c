@@ -20,7 +20,10 @@
 
 moto_info_t motor_info[MOTOR_MAX_NUM];
 uint16_t can_cnt;
-int flag=0;
+int flag1=0;
+
+int setangleflag[MOTOR_MAX_NUM]={0,0,0,0,0,0,0};
+float RealSetAngle[MOTOR_MAX_NUM];
 
 /**
   * @brief  init can filter, start can, enable can rx interrupt
@@ -56,7 +59,7 @@ void can_user_init(CAN_HandleTypeDef* hcan )
   */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-	flag=1;
+	flag1=1;
   CAN_RxHeaderTypeDef rx_header;
   uint8_t             rx_data[8];
   if(hcan->Instance == CAN1)
@@ -72,6 +75,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     motor_info[index].rotor_speed    = ((rx_data[2] << 8) | rx_data[3]);
     motor_info[index].torque_current = ((rx_data[4] << 8) | rx_data[5]);
     motor_info[index].temp           =   rx_data[6];
+		if(!setangleflag[index])
+		{
+			RealSetAngle[index]=motor_info[index].rotor_angle;
+			setangleflag[index]=1;
+		}
   }
   if (can_cnt == 500)
   {

@@ -33,3 +33,5 @@
 2006anglecontrol\drv_usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 2006anglecontrol\drv_usart.o: ../Core/Inc/rc_potocal.h
 2006anglecontrol\drv_usart.o: ../Core/Inc/usart.h
+2006anglecontrol\drv_usart.o: ../Core/Inc/drv_can.h
+2006anglecontrol\drv_usart.o: ../Core/Inc/can.h
