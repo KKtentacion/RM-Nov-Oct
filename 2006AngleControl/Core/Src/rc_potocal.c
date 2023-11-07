@@ -27,8 +27,9 @@ losing data.
 /* ----------------------- Internal Data ----------------------------------- */
 
 #define RC_CH_VALUE_OFFSET      ((uint16_t)1024)
-#define MAX_ANGLE								((uint16_t)8191)
+#define MAX_ANGLE								((uint16_t)360)
 #define MIN_ANGLE								((uint16_t)0)
+#define pi											3.1415926
 
 volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH]; 
 //double sbus rx buffer to save data
@@ -43,7 +44,7 @@ int flag2=0;
 
 void USART3_rxDataHandler(uint8_t *pData)
 {
-		flag2=1;
+		flag2++;
     if(pData == NULL)
     {
         return;
@@ -65,13 +66,13 @@ void USART3_rxDataHandler(uint8_t *pData)
     RC_CtrlData.key.v = ((int16_t)pData[14]);// | ((int16_t)pData[15] << 8);
 
 		//your control code ....
-		RC_CtrlData.rc.ch0-=RC_CH_VALUE_OFFSET;
-    RC_CtrlData.rc.ch1-=RC_CH_VALUE_OFFSET;
-    RC_CtrlData.rc.ch2-=RC_CH_VALUE_OFFSET;
-    RC_CtrlData.rc.ch3-=RC_CH_VALUE_OFFSET;
+//		RC_CtrlData.rc.ch0-=RC_CH_VALUE_OFFSET;
+//    RC_CtrlData.rc.ch1-=RC_CH_VALUE_OFFSET;
+//    RC_CtrlData.rc.ch2-=RC_CH_VALUE_OFFSET;
+//    RC_CtrlData.rc.ch3-=RC_CH_VALUE_OFFSET;
 		
-		Setdeltangle =RC_CtrlData.rc.ch0/6600;
-		realdata=Setdeltangle*6600;
+		Setdeltangle =RC_CtrlData.rc.ch2-RC_CH_VALUE_OFFSET;
+		Setdeltangle=Setdeltangle/660*0.3;
 		
 		for(int i=0;i<MOTOR_MAX_NUM;i++)
 		{
@@ -82,4 +83,5 @@ void USART3_rxDataHandler(uint8_t *pData)
 			if(RealSetAngle[i]<=MIN_ANGLE)
 				RealSetAngle[i]+=MAX_ANGLE;
 		}		
+		
 }

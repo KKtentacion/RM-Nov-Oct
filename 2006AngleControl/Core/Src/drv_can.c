@@ -59,7 +59,7 @@ void can_user_init(CAN_HandleTypeDef* hcan )
   */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-	flag1=1;
+	flag1++;
   CAN_RxHeaderTypeDef rx_header;
   uint8_t             rx_data[8];
   if(hcan->Instance == CAN1)
@@ -71,7 +71,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
   {
     can_cnt ++;
     uint8_t index = rx_header.StdId - FEEDBACK_ID_BASE;                  // get motor index by can_id
-    motor_info[index].rotor_angle    = ((rx_data[0] << 8) | rx_data[1]);
+    motor_info[index].rotor_angle    = ((rx_data[0] << 8) | rx_data[1])*360.0/8192;
     motor_info[index].rotor_speed    = ((rx_data[2] << 8) | rx_data[3]);
     motor_info[index].torque_current = ((rx_data[4] << 8) | rx_data[5]);
     motor_info[index].temp           =   rx_data[6];
@@ -86,6 +86,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     can_cnt = 0;
     LED_GREEN_TOGGLE(); // green led blink indicate can comunication successful 
   }
+	__HAL_CAN_ENABLE_IT(&hcan1, CAN_RX_FIFO0);
 }
 
 /**

@@ -185,6 +185,26 @@
           <WinNumber>1</WinNumber>
           <ItemText>\\6020AngleControl\../Core/Src/main.c\motor_cascadepid[3].inner</ItemText>
         </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>flag2</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>RC_CtrlData</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>flag1</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>can_cnt</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -235,7 +255,22 @@
         <Ww>
           <count>9</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Setdeltangle</ItemText>
+          <ItemText>Setdeltangle,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\6020AngleControl\../Core/Src/main.c\motor_cascadepid[3].outer.output</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\6020AngleControl\../Core/Src/main.c\motor_cascadepid[3].outer.fdb</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\6020AngleControl\../Core/Src/main.c\motor_cascadepid[3].outer.ref</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

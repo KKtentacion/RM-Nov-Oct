@@ -27,7 +27,7 @@
 
 typedef struct
 {
-    uint16_t can_id;
+    uint16_t can_id; 
     int16_t  set_voltage;
     uint16_t rotor_angle;
     int16_t  rotor_speed;
