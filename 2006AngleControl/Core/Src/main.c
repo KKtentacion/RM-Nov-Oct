@@ -108,8 +108,8 @@ int main(void)
 	
 	for(int i=0;i<MOTOR_MAX_NUM;i++)
 	{
-		pid_init(&motor_cascadepid[i].inner,50,0,20,5000,10000);
-		pid_init(&motor_cascadepid[i].outer,50,0,20,5000,10000);
+		pid_init(&motor_cascadepid[i].inner,10,2,0,10000,10000);
+		pid_init(&motor_cascadepid[i].outer,10,0,5,10000,10000);
 	}
   /* USER CODE END 2 */
 

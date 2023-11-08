@@ -66,13 +66,9 @@ void USART3_rxDataHandler(uint8_t *pData)
     RC_CtrlData.key.v = ((int16_t)pData[14]);// | ((int16_t)pData[15] << 8);
 
 		//your control code ....
-//		RC_CtrlData.rc.ch0-=RC_CH_VALUE_OFFSET;
-//    RC_CtrlData.rc.ch1-=RC_CH_VALUE_OFFSET;
-//    RC_CtrlData.rc.ch2-=RC_CH_VALUE_OFFSET;
-//    RC_CtrlData.rc.ch3-=RC_CH_VALUE_OFFSET;
 		
 		Setdeltangle =RC_CtrlData.rc.ch2-RC_CH_VALUE_OFFSET;
-		Setdeltangle=Setdeltangle/660*0.3;
+		Setdeltangle=Setdeltangle/660*5;
 		
 		for(int i=0;i<MOTOR_MAX_NUM;i++)
 		{
