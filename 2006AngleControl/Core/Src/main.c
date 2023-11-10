@@ -108,8 +108,8 @@ int main(void)
 	
 	for(int i=0;i<MOTOR_MAX_NUM;i++)
 	{
-		pid_init(&motor_cascadepid[i].inner,50,0,20,5000,10000);
-		pid_init(&motor_cascadepid[i].outer,50,0,20,5000,10000);
+		pid_init(&motor_cascadepid[i].inner,10,0,0,5000,10000);
+		pid_init(&motor_cascadepid[i].outer,10,0,2,5000,10000);
 	}
   /* USER CODE END 2 */
 
@@ -124,14 +124,14 @@ int main(void)
     for(int i=0;i<MOTOR_MAX_NUM;i++)
     {
 			
-//			if(RealSetAngle[i]-motor_info[i].rotor_angle>360)
-//			{
-//				RealSetAngle[i]-=360;
-//			}
-//			else if(RealSetAngle[i]-motor_info[i].rotor_angle<-360)
-//			{
-//				RealSetAngle[i]+=360;
-//			}
+			if(RealSetAngle[i]-motor_info[i].rotor_angle>180)
+			{
+				RealSetAngle[i]-=360;
+			}
+			else if(RealSetAngle[i]-motor_info[i].rotor_angle<-180)
+			{
+				RealSetAngle[i]+=360;
+			}
 			
       motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid[i],RealSetAngle[i],motor_info[i].rotor_angle,motor_info[i].rotor_speed);
     }
