@@ -3,7 +3,7 @@
 <title>Static Call Graph - [2006AngleControl\6020AngleControl.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image 2006AngleControl\6020AngleControl.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Nov 10 22:18:24 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Nov 10 22:34:13 2023
 <BR><P>
 <H3>Maximum Stack Usage =        200 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1070,8 +1070,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c1]"></a>USART3_rxDataHandler</STRONG> (Thumb, 210 bytes, Stack size 12 bytes, rc_potocal.o(i.USART3_rxDataHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = USART3_rxDataHandler
+<P><STRONG><a name="[c1]"></a>USART3_rxDataHandler</STRONG> (Thumb, 302 bytes, Stack size 20 bytes, rc_potocal.o(i.USART3_rxDataHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART3_rxDataHandler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dma_m1_rxcplt_callback
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dma_m0_rxcplt_callback
@@ -1244,14 +1244,14 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[60]"></a>dma_m0_rxcplt_callback</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, drv_usart.o(i.dma_m0_rxcplt_callback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = dma_m0_rxcplt_callback &rArr; USART3_rxDataHandler
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = dma_m0_rxcplt_callback &rArr; USART3_rxDataHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_rxDataHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> drv_usart.o(i.DMAEx_MultiBufferStart_NoIT)
 </UL>
 <P><STRONG><a name="[61]"></a>dma_m1_rxcplt_callback</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, drv_usart.o(i.dma_m1_rxcplt_callback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = dma_m1_rxcplt_callback &rArr; USART3_rxDataHandler
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = dma_m1_rxcplt_callback &rArr; USART3_rxDataHandler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_rxDataHandler
 </UL>

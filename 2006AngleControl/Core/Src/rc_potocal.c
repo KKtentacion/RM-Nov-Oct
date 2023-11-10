@@ -37,6 +37,9 @@ static RC_Ctl_t RC_CtrlData;
 
 extern float RealSetAngle[MOTOR_MAX_NUM];
 float Setdeltangle;
+int Modechoice;
+int anglecontrol;
+int initflag;
 int realdata;
 
 
@@ -64,24 +67,44 @@ void USART3_rxDataHandler(uint8_t *pData)
     RC_CtrlData.mouse.press_l = pData[12];
     RC_CtrlData.mouse.press_r = pData[13];
     RC_CtrlData.key.v = ((int16_t)pData[14]);// | ((int16_t)pData[15] << 8);
-
-		//your control code ....
-//		RC_CtrlData.rc.ch0-=RC_CH_VALUE_OFFSET;
-//    RC_CtrlData.rc.ch1-=RC_CH_VALUE_OFFSET;
-//    RC_CtrlData.rc.ch2-=RC_CH_VALUE_OFFSET;
-//    RC_CtrlData.rc.ch3-=RC_CH_VALUE_OFFSET;
 		
-		Setdeltangle =RC_CtrlData.rc.ch2-RC_CH_VALUE_OFFSET;
-		Setdeltangle=Setdeltangle/660*5;
+		Modechoice=RC_CtrlData.rc.s2;
+		anglecontrol=(RC_CtrlData.rc.s1-);
 		
-		for(int i=0;i<MOTOR_MAX_NUM;i++)
+		if(Modechoice==3)
 		{
-			RealSetAngle[i]+=Setdeltangle;
-			if(RealSetAngle[i]>=MAX_ANGLE)
-				RealSetAngle[i]-=MAX_ANGLE;
+			Setdeltangle =RC_CtrlData.rc.ch2-RC_CH_VALUE_OFFSET;
+			Setdeltangle=Setdeltangle/660*5;
+			for(int i=0;i<MOTOR_MAX_NUM;i++)
+			{
+				RealSetAngle[i]+=Setdeltangle;
+				if(RealSetAngle[i]>=MAX_ANGLE)
+					RealSetAngle[i]-=MAX_ANGLE;
+				
+				if(RealSetAngle[i]<=MIN_ANGLE)
+					RealSetAngle[i]+=MAX_ANGLE;
+			}		
+		}
 			
-			if(RealSetAngle[i]<=MIN_ANGLE)
-				RealSetAngle[i]+=MAX_ANGLE;
-		}		
-		
+		if(Modechoice==1)
+		{
+			if(anglecontrol==3)
+			{
+				initflag=0;
+			}
+			else
+			{
+				initflag=1;
+			}
+			if(initflag==0)
+			for(int i=0;i<MOTOR_MAX_NUM;i++)
+			{
+				RealSetAngle[i]+=Setdeltangle;
+				if(RealSetAngle[i]>=MAX_ANGLE)
+					RealSetAngle[i]-=MAX_ANGLE;
+				
+				if(RealSetAngle[i]<=MIN_ANGLE)
+					RealSetAngle[i]+=MAX_ANGLE;
+			}
+		}
 }

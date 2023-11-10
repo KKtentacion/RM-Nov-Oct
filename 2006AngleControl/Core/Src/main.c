@@ -57,6 +57,8 @@ cascadepid_struct_t motor_cascadepid[MOTOR_MAX_NUM];
 extern moto_info_t motor_info[MOTOR_MAX_NUM];
 
 extern float RealSetAngle[MOTOR_MAX_NUM];
+
+extern int Modechoice;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,8 +123,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		
-    for(int i=0;i<MOTOR_MAX_NUM;i++)
-    {
+		for(int i=0;i<MOTOR_MAX_NUM;i++)
+		{
 			
 			if(RealSetAngle[i]-motor_info[i].rotor_angle>180)
 			{
@@ -133,15 +135,14 @@ int main(void)
 				RealSetAngle[i]+=360;
 			}
 			
-      motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid[i],RealSetAngle[i],motor_info[i].rotor_angle,motor_info[i].rotor_speed);
-    }
+			motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid[i],RealSetAngle[i],motor_info[i].rotor_angle,motor_info[i].rotor_speed);
+		}
 
-    set_motor_voltage(0, 
-                  motor_info[0].set_voltage, 
-                  motor_info[1].set_voltage, 
-                  motor_info[2].set_voltage, 
-                  motor_info[3].set_voltage);
-		
+		set_motor_voltage(0, 
+									motor_info[0].set_voltage, 
+									motor_info[1].set_voltage, 
+									motor_info[2].set_voltage, 
+									motor_info[3].set_voltage);
 		HAL_Delay(100);
 
   }

@@ -272,6 +272,16 @@
           <WinNumber>2</WinNumber>
           <ItemText>\\6020AngleControl\../Core/Src/main.c\motor_cascadepid[3].outer.ref</ItemText>
         </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Modechoice,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>anglecontrol,0x0A</ItemText>
+        </Ww>
       </WatchWindow2>
       <Tracepoint>
         <THDelay>0</THDelay>
