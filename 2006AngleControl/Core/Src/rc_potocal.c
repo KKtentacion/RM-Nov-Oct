@@ -30,6 +30,8 @@ losing data.
 #define MAX_ANGLE								((uint16_t)360)
 #define MIN_ANGLE								((uint16_t)0)
 #define pi											3.1415926
+#define VaryMode  									3
+#define FixedMode									1
 
 volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH]; 
 //double sbus rx buffer to save data
@@ -39,11 +41,24 @@ extern float RealSetAngle[MOTOR_MAX_NUM];
 float Setdeltangle;
 int Modechoice;
 int anglecontrol;
-int initflag;
+int resetflag=-1;
 int realdata;
 
 
 int flag2=0;
+
+void SetRealAngle(float delatangle)
+{
+		for(int i=0;i<MOTOR_MAX_NUM;i++)
+		{
+			RealSetAngle[i]+=delatangle;
+			if(RealSetAngle[i]>=MAX_ANGLE)
+				RealSetAngle[i]-=MAX_ANGLE;
+			
+			if(RealSetAngle[i]<=MIN_ANGLE)
+				RealSetAngle[i]+=MAX_ANGLE;
+		}
+}
 
 void USART3_rxDataHandler(uint8_t *pData)
 {
@@ -69,42 +84,50 @@ void USART3_rxDataHandler(uint8_t *pData)
     RC_CtrlData.key.v = ((int16_t)pData[14]);// | ((int16_t)pData[15] << 8);
 		
 		Modechoice=RC_CtrlData.rc.s2;
-		anglecontrol=(RC_CtrlData.rc.s1-);
 		
-		if(Modechoice==3)
+		if(Modechoice==VaryMode)
 		{
 			Setdeltangle =RC_CtrlData.rc.ch2-RC_CH_VALUE_OFFSET;
-			Setdeltangle=Setdeltangle/660*5;
-			for(int i=0;i<MOTOR_MAX_NUM;i++)
-			{
-				RealSetAngle[i]+=Setdeltangle;
-				if(RealSetAngle[i]>=MAX_ANGLE)
-					RealSetAngle[i]-=MAX_ANGLE;
-				
-				if(RealSetAngle[i]<=MIN_ANGLE)
-					RealSetAngle[i]+=MAX_ANGLE;
-			}		
+			Setdeltangle=Setdeltangle/660*5;	
+			SetRealAngle(Setdeltangle);
 		}
 			
-		if(Modechoice==1)
+		if(Modechoice==FixedMode)
 		{
-			if(anglecontrol==3)
+			anglecontrol=RC_CtrlData.rc.s1;
+			
+			if(resetflag==-1)					
 			{
-				initflag=0;
+				if(anglecontrol==3) 				
+				{
+					resetflag=1;
+				}
+				else
+				{
+					resetflag=0;
+				}
+			}
+			
+			if(resetflag==1)					//已经重置过角度 那么就设定角度加或减
+			{
+				switch (anglecontrol)
+				{
+				case 1:
+					SetRealAngle(60);
+					break;
+				case 2:
+					SetRealAngle(-60);
+				default:
+					break;
+				}
+			}
+			if(anglecontrol==3) 				//重置此时角度为原始角度
+			{
+				resetflag=1;
 			}
 			else
 			{
-				initflag=1;
-			}
-			if(initflag==0)
-			for(int i=0;i<MOTOR_MAX_NUM;i++)
-			{
-				RealSetAngle[i]+=Setdeltangle;
-				if(RealSetAngle[i]>=MAX_ANGLE)
-					RealSetAngle[i]-=MAX_ANGLE;
-				
-				if(RealSetAngle[i]<=MIN_ANGLE)
-					RealSetAngle[i]+=MAX_ANGLE;
+				resetflag=0;
 			}
 		}
 }

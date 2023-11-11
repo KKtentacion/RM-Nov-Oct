@@ -51,6 +51,6 @@ typedef __packed struct
 
 //function declaration
 void USART3_rxDataHandler(uint8_t *pData);
-
+void SetRealAngle(float delatangle);
 
 #endif
