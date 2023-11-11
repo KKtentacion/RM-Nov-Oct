@@ -50,7 +50,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-static float target_angle=8000;
 pid_struct_t motor_pid[MOTOR_MAX_NUM];
 cascadepid_struct_t motor_cascadepid[MOTOR_MAX_NUM];
 

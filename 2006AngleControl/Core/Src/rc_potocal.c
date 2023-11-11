@@ -113,10 +113,10 @@ void USART3_rxDataHandler(uint8_t *pData)
 				switch (anglecontrol)
 				{
 				case 1:
-					SetRealAngle(60);
+					SetRealAngle(70);
 					break;
 				case 2:
-					SetRealAngle(-60);
+					SetRealAngle(-70);
 				default:
 					break;
 				}
