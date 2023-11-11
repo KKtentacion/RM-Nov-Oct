@@ -29,9 +29,6 @@ losing data.
 #define RC_CH_VALUE_OFFSET      ((uint16_t)1024)
 #define MAX_ANGLE								((uint16_t)360)
 #define MIN_ANGLE								((uint16_t)0)
-#define pi											3.1415926
-#define VaryMode  									3
-#define FixedMode									1
 
 volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH]; 
 //double sbus rx buffer to save data

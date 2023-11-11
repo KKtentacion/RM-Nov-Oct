@@ -23,6 +23,10 @@
 #define KEY_PRESSED_OFFSET_CTRL ((uint16_t)0x01<<7)
 #define RC_FRAME_LENGTH 18u
 /* ----------------------- Data Struct ------------------------------------- */
+#define pi											3.1415926
+#define VaryMode  								3
+#define FixedMode									1
+
 typedef __packed struct
 {
         __packed struct
