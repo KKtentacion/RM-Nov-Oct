@@ -3,18 +3,18 @@
         {
             "name": "2006AngleControl",
             "includePath": [
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Core\\Inc",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Drivers\\CMSIS\\Include",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Core\\Inc",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Drivers\\CMSIS\\Include",
                 "E:\\Keil_MDK\\ARM\\ARMCC\\include",
                 "E:\\Keil_MDK\\ARM\\ARMCC\\include\\arm_linux",
                 "E:\\Keil_MDK\\ARM\\ARMCC\\include\\arm_linux_compat",
                 "E:\\Keil_MDK\\ARM\\ARMCC\\include\\rw",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\MDK-ARM",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Core\\Src",
-                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006AngleControl\\Drivers\\STM32F4xx_HAL_Driver\\Src"
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\MDK-ARM",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Core\\Src",
+                "e:\\NewRM\\RM-Nov-Dec\\RM-Nov-Dec\\2006BreakControl\\Drivers\\STM32F4xx_HAL_Driver\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",
