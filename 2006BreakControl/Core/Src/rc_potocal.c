@@ -35,17 +35,23 @@ volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH];
 static RC_Ctl_t RC_CtrlData;
 
 extern float RealSetAngle[MOTOR_MAX_NUM];
+extern moto_info_t motor_info[MOTOR_MAX_NUM];
 float Setdeltangle;
 int Modechoice;
 int anglecontrol;
 int resetflag=-1;
-int realdata;
+int raductionstartflag=0;
+int raductionendflag=0;
+int RaductionRadio=36/1;
+int cnt=0;
+int settime=0;
 
 
 int flag2=0;
 
 void SetRealAngle(float delatangle)
 {
+		settime++;
 		for(int i=0;i<MOTOR_MAX_NUM;i++)
 		{
 			RealSetAngle[i]+=delatangle;
@@ -56,6 +62,15 @@ void SetRealAngle(float delatangle)
 				RealSetAngle[i]+=MAX_ANGLE;
 		}
 }
+
+void mapzero()
+{
+	for(int i=0;i<MOTOR_MAX_NUM;i++)
+	{
+		RealSetAngle[i]=motor_info[i].rotor_angle;
+	}
+}
+
 
 void USART3_rxDataHandler(uint8_t *pData)
 {
@@ -89,7 +104,7 @@ void USART3_rxDataHandler(uint8_t *pData)
 			SetRealAngle(Setdeltangle);
 		}
 			
-		if(Modechoice==FixedMode)
+		else if(Modechoice==FixedMode)
 		{
 			anglecontrol=RC_CtrlData.rc.s1;
 			
@@ -110,10 +125,10 @@ void USART3_rxDataHandler(uint8_t *pData)
 				switch (anglecontrol)
 				{
 				case 1:
-					SetRealAngle(70);
+					SetRealAngle(60);
 					break;
 				case 2:
-					SetRealAngle(-70);
+					SetRealAngle(-60);
 				default:
 					break;
 				}
@@ -125,6 +140,57 @@ void USART3_rxDataHandler(uint8_t *pData)
 			else
 			{
 				resetflag=0;
+			}
+		}
+		else if(Modechoice==RaductionMode)
+		{
+			anglecontrol=RC_CtrlData.rc.s1;
+			
+			if(anglecontrol==3)
+			{
+				resetflag=1;
+				raductionendflag=0;
+				cnt=0;
+				mapzero();
+			}
+			
+			if(resetflag)
+			{
+				switch(anglecontrol)
+				{
+					case 1:
+					{
+						if(!raductionendflag)
+						{
+							if(cnt++!=RaductionRadio)
+							{
+								SetRealAngle(10);
+							}
+							else
+							{
+								raductionendflag=1;
+							}
+						}
+						break;
+					}
+					case 2:
+					{
+						if(!raductionendflag)
+						{
+							if(cnt++!=RaductionRadio)
+							{
+								SetRealAngle(-10);
+							}
+							else
+							{
+								raductionendflag=1;
+							}
+						}
+						break;
+					}
+					default:
+						break;
+				}
 			}
 		}
 }

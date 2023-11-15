@@ -175,6 +175,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>motor_cascadepid</ItemText>
         </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>settime,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -221,6 +226,16 @@
           <count>8</count>
           <WinNumber>2</WinNumber>
           <ItemText>\\6020AngleControl\../Core/Src/main.c\motor_cascadepid[3].output</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>cnt,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>\\6020AngleControl\../Core/Src/drv_can.c\RealSetAngle[3]</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>
