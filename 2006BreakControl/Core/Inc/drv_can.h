@@ -30,6 +30,8 @@ typedef struct
     uint16_t can_id; 
     int16_t  set_voltage;
     uint16_t rotor_angle;
+		uint16_t rotor_last_angle;
+		uint16_t rotor_real_angle;
     int16_t  rotor_speed;
     int16_t  torque_current;
     uint8_t  temp;

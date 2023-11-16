@@ -52,10 +52,10 @@ float pid_calc(pid_struct_t *pid, float ref, float fdb)
   pid->err[0] = pid->ref - pid->fdb;
 	
 	
-	if(pid->err[0]>180)
-		pid->err[0]-=360;
-	else if(pid->err[0]<-180)
-		pid->err[0]+=360;
+	if(pid->err[0]>4096)
+		pid->err[0]-=8192;
+	else if(pid->err[0]<-4096)
+		pid->err[0]+=8192;
   
   pid->p_out  = pid->kp * pid->err[0];
   pid->i_out += pid->ki * pid->err[0];

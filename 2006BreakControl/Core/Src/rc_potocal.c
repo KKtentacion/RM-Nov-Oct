@@ -27,7 +27,7 @@ losing data.
 /* ----------------------- Internal Data ----------------------------------- */
 
 #define RC_CH_VALUE_OFFSET      ((uint16_t)1024)
-#define MAX_ANGLE								((uint16_t)360)
+#define MAX_ANGLE								((uint16_t)8192)
 #define MIN_ANGLE								((uint16_t)0)
 
 volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH]; 
@@ -35,26 +35,25 @@ volatile unsigned char sbus_rx_buffer[2][RC_FRAME_LENGTH];
 static RC_Ctl_t RC_CtrlData;
 
 extern float RealSetAngle[MOTOR_MAX_NUM];
+extern float RaductionRealSetAngle[MOTOR_MAX_NUM];
 extern moto_info_t motor_info[MOTOR_MAX_NUM];
 float Setdeltangle;
+float mappdelatangle;
 int Modechoice;
 int anglecontrol;
 int resetflag=-1;
-int raductionstartflag=0;
-int raductionendflag=0;
 int RaductionRadio=36/1;
-int cnt=0;
-int settime=0;
+
 
 
 int flag2=0;
 
-void SetRealAngle(float delatangle)
+void SetRealAngle(float deltaangle)
 {
-		settime++;
+		mappdelatangle=deltaangle*(8192/360);
 		for(int i=0;i<MOTOR_MAX_NUM;i++)
 		{
-			RealSetAngle[i]+=delatangle;
+			RealSetAngle[i]+=mappdelatangle;
 			if(RealSetAngle[i]>=MAX_ANGLE)
 				RealSetAngle[i]-=MAX_ANGLE;
 			
@@ -63,11 +62,23 @@ void SetRealAngle(float delatangle)
 		}
 }
 
+void RaductionSetRealAngle(float deltaangle)
+{
+		mappdelatangle=deltaangle*(8192/360);
+		for(int i=0;i<MOTOR_MAX_NUM;i++)
+		{
+			RaductionRealSetAngle[i]+=mappdelatangle;
+		}
+}
+
 void mapzero()
 {
 	for(int i=0;i<MOTOR_MAX_NUM;i++)
 	{
 		RealSetAngle[i]=motor_info[i].rotor_angle;
+		RaductionRealSetAngle[i]=0;
+		motor_info[i].rotor_last_angle=motor_info[i].rotor_angle;
+		motor_info[i].rotor_real_angle=0;
 	}
 }
 
@@ -108,49 +119,9 @@ void USART3_rxDataHandler(uint8_t *pData)
 		{
 			anglecontrol=RC_CtrlData.rc.s1;
 			
-			if(resetflag==-1)					
-			{
-				if(anglecontrol==3) 				
-				{
-					resetflag=1;
-				}
-				else
-				{
-					resetflag=0;
-				}
-			}
-			
-			if(resetflag==1)					//已经重置过角度 那么就设定角度加或减
-			{
-				switch (anglecontrol)
-				{
-				case 1:
-					SetRealAngle(60);
-					break;
-				case 2:
-					SetRealAngle(-60);
-				default:
-					break;
-				}
-			}
-			if(anglecontrol==3) 				//重置此时角度为原始角度
-			{
-				resetflag=1;
-			}
-			else
-			{
-				resetflag=0;
-			}
-		}
-		else if(Modechoice==RaductionMode)
-		{
-			anglecontrol=RC_CtrlData.rc.s1;
-			
 			if(anglecontrol==3)
 			{
 				resetflag=1;
-				raductionendflag=0;
-				cnt=0;
 				mapzero();
 			}
 			
@@ -160,32 +131,45 @@ void USART3_rxDataHandler(uint8_t *pData)
 				{
 					case 1:
 					{
-						if(!raductionendflag)
-						{
-							if(cnt++!=RaductionRadio)
-							{
-								SetRealAngle(10);
-							}
-							else
-							{
-								raductionendflag=1;
-							}
-						}
+							SetRealAngle(45);
+							resetflag=0;
+							break;
+					}
+					case 2:
+					{
+						SetRealAngle(-45);
+						resetflag=0;
+						break;
+					}
+					default:
+						break;
+				}
+			}
+		}
+		else if(Modechoice==RaductionMode)
+		{
+			anglecontrol=RC_CtrlData.rc.s1;
+			
+			if(anglecontrol==3)
+			{
+				resetflag=1;
+				mapzero();
+			}
+			
+			if(resetflag)
+			{
+				switch(anglecontrol)
+				{
+					case 1:
+					{
+						RaductionSetRealAngle(45);
+						resetflag=0;
 						break;
 					}
 					case 2:
 					{
-						if(!raductionendflag)
-						{
-							if(cnt++!=RaductionRadio)
-							{
-								SetRealAngle(-10);
-							}
-							else
-							{
-								raductionendflag=1;
-							}
-						}
+						RaductionSetRealAngle(-45);
+						resetflag=0;
 						break;
 					}
 					default:

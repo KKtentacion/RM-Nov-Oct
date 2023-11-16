@@ -27,16 +27,18 @@ Project File Date:  11/05/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'E:\Keil_MDK\ARM\ARMCC\Bin'
 Build target '2006AngleControl'
-compiling rc_potocal.c...
+compiling main.c...
+../Core/Inc/drv_usart.h(15): warning:  #1-D: last line of file ends without a newline
+  #endif
 ../Core/Inc/rc_potocal.h(61): warning:  #1-D: last line of file ends without a newline
   #endif
-..\Core\Src\rc_potocal.c(196): warning:  #1-D: last line of file ends without a newline
-  }
-..\Core\Src\rc_potocal.c: 2 warnings, 0 errors
+../Core/Src/main.c(223): warning:  #186-D: pointless comparison of unsigned integer with zero
+  	else if(motor_info[i].rotor_real_angle<0)
+../Core/Src/main.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=10770 RO-data=458 RW-data=64 ZI-data=2896  
+Program Size: Code=10226 RO-data=458 RW-data=56 ZI-data=2952  
 FromELF: creating hex file...
-"2006AngleControl\6020AngleControl.axf" - 0 Error(s), 2 Warning(s).
+"2006AngleControl\6020AngleControl.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
