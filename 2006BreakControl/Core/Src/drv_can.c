@@ -25,6 +25,7 @@ int flag1=0;
 int setangleflag[MOTOR_MAX_NUM]={0,0,0,0,0,0,0};
 float RealSetAngle[MOTOR_MAX_NUM];
 float RaductionRealSetAngle[MOTOR_MAX_NUM];
+float diff;
 
 /**
   * @brief  init can filter, start can, enable can rx interrupt
@@ -81,6 +82,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			RealSetAngle[index]=motor_info[index].rotor_angle;
 			setangleflag[index]=1;
 		}
+		RaductionRealAngle(index);
   }
   if (can_cnt == 500)
   {
@@ -115,4 +117,31 @@ void set_motor_voltage(uint8_t id_range, int16_t v1, int16_t v2, int16_t v3, int
   tx_data[6] = (v4>>8)&0xff;
   tx_data[7] =    (v4)&0xff;
   HAL_CAN_AddTxMessage(&hcan1, &tx_header, tx_data,(uint32_t*)CAN_TX_MAILBOX0); 
+}
+
+void RaductionRealAngle(int i)
+{
+	diff=motor_info[i].rotor_angle-motor_info[i].rotor_last_angle;
+	motor_info[i].rotor_last_angle=motor_info[i].rotor_angle;
+	
+	if(diff>8192/2)
+	{
+		diff-=8192;
+	}
+	else if(diff<-8192/2)
+	{
+		diff+=8192;
+	}
+	
+	motor_info[i].rotor_real_angle+=(diff)/36;
+	
+	if(motor_info[i].rotor_real_angle>8191)
+	{
+		motor_info[i].rotor_real_angle -= 8191;
+	}
+	else if(motor_info[i].rotor_real_angle<0)
+	{
+		motor_info[i].rotor_real_angle +=8191;
+	}
+	
 }

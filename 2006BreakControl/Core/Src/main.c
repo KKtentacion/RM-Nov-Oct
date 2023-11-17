@@ -52,7 +52,6 @@
 /* USER CODE BEGIN PV */
 pid_struct_t motor_pid[MOTOR_MAX_NUM];
 cascadepid_struct_t motor_cascadepid[MOTOR_MAX_NUM];
-float diff;
 
 extern moto_info_t motor_info[MOTOR_MAX_NUM];
 
@@ -67,7 +66,6 @@ extern int Modechoice;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void RaductionRealAngle(int i);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -113,8 +111,8 @@ int main(void)
 	
 	for(int i=0;i<MOTOR_MAX_NUM;i++)
 	{
-		pid_init(&motor_cascadepid[i].inner,0.25,0,0,5000,5000);
-		pid_init(&motor_cascadepid[i].outer,4,0,0,5000,10000);
+		pid_init(&motor_cascadepid[i].inner,0.25,0,0.05,5000,5000);
+		pid_init(&motor_cascadepid[i].outer,5,0,0.7,5000,10000);
 	}
   /* USER CODE END 2 */
 
@@ -130,7 +128,6 @@ int main(void)
 		{
 			for(int i=0;i<MOTOR_MAX_NUM;i++)
 			{
-				RaductionRealAngle(i);
 				motor_info[i].set_voltage=cascadepid_calc(&motor_cascadepid[i],RaductionRealSetAngle[i],motor_info[i].rotor_real_angle,motor_info[i].rotor_speed);
 			}
 		}
@@ -200,32 +197,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void RaductionRealAngle(int i)
-{
-	diff=motor_info[i].rotor_angle-motor_info[i].rotor_last_angle;
-	motor_info[i].rotor_last_angle=motor_info[i].rotor_angle;
-	
-	if(diff>8192/2)
-	{
-		diff-=8192;
-	}
-	else if(diff<-8192/2)
-	{
-		diff+=8192;
-	}
-	
-	motor_info[i].rotor_real_angle+=(diff)/36;
-	
-	if(motor_info[i].rotor_real_angle>8191)
-	{
-		motor_info[i].rotor_real_angle -= 8191;
-	}
-	else if(motor_info[i].rotor_real_angle<0)
-	{
-		motor_info[i].rotor_real_angle +=8191;
-	}
-	
-}
+
 /* USER CODE END 4 */
 
 /**

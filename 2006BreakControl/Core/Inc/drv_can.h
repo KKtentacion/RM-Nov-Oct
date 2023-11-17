@@ -31,7 +31,7 @@ typedef struct
     int16_t  set_voltage;
     uint16_t rotor_angle;
 		uint16_t rotor_last_angle;
-		uint16_t rotor_real_angle;
+		float rotor_real_angle;
     int16_t  rotor_speed;
     int16_t  torque_current;
     uint8_t  temp;
@@ -40,4 +40,5 @@ typedef struct
 void can_user_init(CAN_HandleTypeDef* hcan);
 void set_motor_voltage(uint8_t id_range, int16_t v1, int16_t v2, int16_t v3, int16_t v4);
 extern moto_info_t motor_info[MOTOR_MAX_NUM];
+void RaductionRealAngle(int i);
 #endif
